@@ -3,16 +3,15 @@ import React from "react";
 
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { useStyles } from "react-native-unistyles";
+import CustomHeader from "@/components/CustomHeader";
 
 export default function TabLayout() {
   const { theme } = useStyles();
   return (
     <Tabs
       screenOptions={{
-        headerStyle: {
-          backgroundColor: theme.colors.background,
-          borderColor: theme.colors.accent,
-          borderBottomColor: theme.colors.accent,
+        header: (props) => {
+          return <CustomHeader />;
         },
         tabBarActiveBackgroundColor: theme.colors.background,
         tabBarInactiveBackgroundColor: theme.colors.background,

@@ -12,6 +12,7 @@ import "react-native-reanimated";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { UnistylesRegistry, UnistylesRuntime } from "react-native-unistyles";
 import { darkTheme, lightTheme } from "@/themes";
+import BackButton from "@/components/BackButton";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -45,6 +46,21 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="report"
+          options={{
+            title: "Make a Report",
+            headerLeft: () => <BackButton />,
+          }}
+        />
+        <Stack.Screen
+          name="account"
+          options={{
+            title: "Your Account",
+            headerLeft: () => <BackButton />,
+          }}
+        />
       </Stack>
     </ThemeProvider>
   );

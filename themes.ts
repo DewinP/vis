@@ -1,6 +1,6 @@
 import { tailwindColors } from "@/constants/tailwind-colors";
 
-// here replace any primary colorname from tailwind-color
+// Replace any primary color name from tailwind-color
 const themePrimaryColor = "violet";
 const themeSecondaryColor = "gray";
 const themeErrorColor = "red";
@@ -10,6 +10,7 @@ export const lightTheme = {
     white: "white",
     black: "black",
     typography: "#000000",
+    mutedTypography: "#6B7280", // Lighter version of the typography color
     background: "#ffffff",
     primary: tailwindColors[themePrimaryColor][700],
     secondary: tailwindColors[themeSecondaryColor][300],
@@ -19,6 +20,8 @@ export const lightTheme = {
     mutedSecondary: tailwindColors[themeSecondaryColor][400],
     mutedError: tailwindColors[themeErrorColor][600],
     mutedTransparent: tailwindColors[themeSecondaryColor][100],
+    borderInput: tailwindColors[themeSecondaryColor][400], // Neutral color when not focused
+    borderInputFocused: tailwindColors[themePrimaryColor][500], // Accent color when focused
   },
   margins: {
     sm: 2,
@@ -33,6 +36,7 @@ export const darkTheme = {
     white: "white",
     black: "black",
     typography: "#ffffff",
+    mutedTypography: "#9CA3AF", // Lighter version of the typography color
     background: "#0C0A09",
     primary: tailwindColors[themePrimaryColor][600],
     secondary: tailwindColors[themeSecondaryColor][700],
@@ -42,6 +46,8 @@ export const darkTheme = {
     mutedSecondary: tailwindColors[themeSecondaryColor][600],
     mutedError: tailwindColors[themeErrorColor][600],
     mutedTransparent: tailwindColors[themeSecondaryColor][900],
+    borderInput: tailwindColors[themeSecondaryColor][600], // Neutral color when not focused
+    borderInputFocused: tailwindColors[themePrimaryColor][400], // Accent color when focused
   },
   margins: {
     sm: 2,
