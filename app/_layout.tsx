@@ -13,6 +13,8 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import { UnistylesRegistry, UnistylesRuntime } from "react-native-unistyles";
 import { darkTheme, lightTheme } from "@/themes";
 import BackButton from "@/components/BackButton";
+import Toastable from "react-native-toastable";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -44,7 +46,12 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="(drawer)"
+          options={{
+            header: () => null, // Explicitly set header to null to remove it
+          }}
+        />
         <Stack.Screen name="+not-found" />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen
@@ -62,6 +69,7 @@ export default function RootLayout() {
           }}
         />
       </Stack>
+      <Toastable duration={3000} />
     </ThemeProvider>
   );
 }

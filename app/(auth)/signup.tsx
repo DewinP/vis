@@ -7,10 +7,12 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Platform,
+  Alert,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { createStyleSheet, useStyles } from "react-native-unistyles";
 import { router } from "expo-router";
+import { supabase } from "@/utils/supabase"; // Make sure to adjust this import based on your project structure
 
 export default function SignUpScreen() {
   const { styles } = useStyles(stylesheet);
@@ -19,9 +21,51 @@ export default function SignUpScreen() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSignUp = () => {
-    // Handle sign-up logic here
+  const handleSignUp = async () => {
+    if (!username || !email || !password || !confirmPassword) {
+      Alert.alert("Error", "All fields are required.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      Alert.alert("Error", "Passwords do not match.");
+      return;
+    }
+
+    if (password.length < 6) {
+      Alert.alert("Error", "Password must be at least 6 characters long.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            username,
+          },
+        },
+      });
+      setLoading(false);
+      if (data) {
+        Alert.alert(
+          "Success",
+          "Your account has been created. Please check your email to confirm your account."
+        );
+        router.navigate("/(auth)/signin");
+      }
+
+      if (error) {
+        Alert.alert("Error", error.message);
+        throw error;
+      }
+    } catch (error) {
+      Alert.alert("Error", "Something went wrong. Please try again.");
+    }
   };
 
   return (

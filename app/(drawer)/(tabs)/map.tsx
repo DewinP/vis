@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { View, TouchableOpacity, Alert } from "react-native";
 import { createStyleSheet, useStyles } from "react-native-unistyles";
-import { Marker } from "react-native-maps";
+import Map, { Marker } from "react-native-maps";
 import MapView from "react-native-map-clustering";
 import * as Location from "expo-location";
 
@@ -68,7 +68,8 @@ export default function TabTwoScreen() {
       setLocation(userLocation.coords);
 
       if (mapRef.current) {
-        mapRef.current.animateToRegion({
+        const hackMap = mapRef.current as Map;
+        hackMap.animateToRegion({
           latitude: userLocation.coords.latitude,
           longitude: userLocation.coords.longitude,
           latitudeDelta: 0.05,

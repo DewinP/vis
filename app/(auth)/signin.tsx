@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -10,16 +10,56 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { createStyleSheet, useStyles } from "react-native-unistyles";
-import { router } from "expo-router";
+import { Alert } from "react-native";
+import { supabase } from "@/utils/supabase"; // Adjust based on your project structure
+
+import { useRouter, useLocalSearchParams } from "expo-router"; // Import the router hooks
 
 export default function SignInScreen() {
   const { styles } = useStyles(stylesheet);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter(); // Initialize the router hook
 
-  const handleSignIn = () => {
-    // Handle sign-in logic here
+  const handleSignIn = async () => {
+    if (!email || !password) {
+      Alert.alert("Error", "Please enter both email and password.");
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        if (error.message === "Email not confirmed") {
+          Alert.alert(
+            "Email Not Confirmed",
+            "Please confirm your email using the link we sent to your inbox before logging in."
+          );
+        } else {
+          throw error; // Let the catch block handle other errors
+        }
+        return;
+      }
+
+      const { user } = data;
+
+      if (!user.email_confirmed_at) {
+        Alert.alert(
+          "Email Not Confirmed",
+          "Please confirm your email using the link we sent to your inbox before logging in."
+        );
+      } else {
+        // Navigate to the landing page
+        router.push("/(drawer)/(tabs)"); // Adjust this route based on your app's structure
+      }
+    } catch (error) {
+      Alert.alert("Error", "Something went wrong. Please try again.");
+    }
   };
 
   return (

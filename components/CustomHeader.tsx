@@ -8,7 +8,8 @@ import {
 } from "react-native";
 import { createStyleSheet, useStyles } from "react-native-unistyles";
 import { useRef, useState } from "react";
-import { router, usePathname } from "expo-router";
+import { router, useNavigation, usePathname } from "expo-router";
+import { DrawerActions } from "@react-navigation/native";
 
 const CustomHeader = () => {
   const { styles } = useStyles(stylesheet);
@@ -21,6 +22,8 @@ const CustomHeader = () => {
   };
 
   const path = usePathname();
+
+  const navigation = useNavigation();
 
   return (
     <SafeAreaView style={styles.mainContainer}>
@@ -49,13 +52,9 @@ const CustomHeader = () => {
         )}
         <TouchableOpacity
           style={styles.profileButtonContainer}
-          onPress={() => router.navigate("/account")}
+          onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
         >
-          <Ionicons
-            style={styles.profileIcon}
-            name="person-outline"
-            size={24}
-          />
+          <Ionicons style={styles.profileIcon} name="menu" size={24} />
         </TouchableOpacity>
       </View>
     </SafeAreaView>
