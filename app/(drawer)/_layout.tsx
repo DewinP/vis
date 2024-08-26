@@ -19,7 +19,6 @@ export default function Layout() {
           headerShown: false, // Ensure no header is shown for the tabs
         }}
       />
-      {/* You can add other screens here, ensuring that headerShown is handled appropriately */}
     </Drawer>
   );
 }

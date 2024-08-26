@@ -6,6 +6,7 @@ import {
 } from "@react-navigation/drawer";
 import { createStyleSheet, useStyles } from "react-native-unistyles";
 import { router } from "expo-router";
+import DrawerMenuAuth from "./account";
 
 // Mock authentication hook
 const useAuth = () => {
@@ -28,7 +29,7 @@ export function DrawerMenu(props: DrawerContentComponentProps) {
       {...props}
       contentContainerStyle={styles.container}
     >
-      {!isAuthenticated ? (
+      {/* {!isAuthenticated ? (
         <View style={styles.authContainer}>
           <Text style={styles.catchyPhrase}>
             Authenticate to unlock all features!
@@ -53,13 +54,10 @@ export function DrawerMenu(props: DrawerContentComponentProps) {
           </TouchableOpacity>
         </View>
       ) : (
-        <View style={styles.profileContainer}>
-          <Text style={styles.profileText}>Welcome, John Doe</Text>
-          <TouchableOpacity style={styles.button} onPress={toggleAuth}>
-            <Text style={styles.buttonText}>Logout</Text>
-          </TouchableOpacity>
-        </View>
-      )}
+        <DrawerMenuAuth />
+      )} */}
+
+      <DrawerMenuAuth />
     </DrawerContentScrollView>
   );
 }

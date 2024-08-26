@@ -61,13 +61,7 @@ export default function RootLayout() {
             headerLeft: () => <BackButton />,
           }}
         />
-        <Stack.Screen
-          name="account"
-          options={{
-            title: "Your Account",
-            headerLeft: () => <BackButton />,
-          }}
-        />
+        <Stack.Screen name="spot" options={{ headerShown: false }} />
       </Stack>
       <Toastable duration={3000} />
     </ThemeProvider>

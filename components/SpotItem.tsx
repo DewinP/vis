@@ -2,56 +2,51 @@ import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { createStyleSheet, useStyles } from "react-native-unistyles";
+import { router } from "expo-router";
+import { Database } from "@/database.types";
+import { Spot } from "./types";
 
 interface SpotItemProps {
-  spotName: string;
-  visibilityRange: string;
-  confirmations: number;
-  timeAgo: string;
-  distance: number; // Assuming distance is in kilometers
-  isFavorite: boolean;
-  onFavoriteToggle: () => void;
-  isExpanded: boolean;
-  onExpandToggle: () => void;
-  reportedBy: string; // New prop for reported by
-  rank: string; // New prop for rank
+  spotInfo: Spot;
 }
 
-const SpotItem: React.FC<SpotItemProps> = ({
-  spotName,
-  visibilityRange,
-  confirmations,
-  timeAgo,
-  distance,
-  isFavorite,
-  onFavoriteToggle,
-  isExpanded,
-  onExpandToggle,
-  reportedBy,
-  rank,
-}) => {
+const SpotItem: React.FC<SpotItemProps> = ({ spotInfo }) => {
   const { styles } = useStyles(stylesheet);
+
+  const isFavorite = false;
+
+  const reportInfo = {
+    confirmations: 5,
+    timeAgo: "1 hour ago",
+    reportedBy: "John Doe",
+    rank: "Beginner",
+  };
 
   return (
     <View style={styles.mainContainer}>
-      <TouchableOpacity onPress={onExpandToggle} style={styles.container}>
+      <TouchableOpacity
+        onPress={() => {
+          router.push(`/spot/${spotInfo.id}`);
+        }}
+        style={styles.container}
+      >
         <View style={styles.leftColumn}>
-          <Text style={styles.visibilityRange}>{visibilityRange}</Text>
+          <Text style={styles.visibilityRange}>{}</Text>
           <View style={styles.line} />
         </View>
         <View style={styles.column}>
-          <Text style={styles.spotName}>{spotName}</Text>
-          <Text style={styles.statusText}>Current {timeAgo}</Text>
+          <Text style={styles.spotName}>{spotInfo.location}</Text>
+          <Text style={styles.statusText}>Current {reportInfo.timeAgo}</Text>
           <Text style={styles.confirmations}>
-            {confirmations} confirmations
+            {reportInfo.confirmations} confirmations
           </Text>
           <Text style={styles.reportedBy}>
-            Reported by {reportedBy} ({rank})
+            Reported by {reportInfo.reportedBy} ({reportInfo.rank})
           </Text>
         </View>
         <View style={styles.rightColumn}>
-          <Text style={styles.distance}>{distance} km</Text>
-          <TouchableOpacity onPress={onFavoriteToggle}>
+          <Text style={styles.distance}>4 km</Text>
+          <TouchableOpacity>
             <Ionicons
               name={isFavorite ? "star" : "star-outline"}
               size={36}
@@ -60,19 +55,6 @@ const SpotItem: React.FC<SpotItemProps> = ({
           </TouchableOpacity>
         </View>
       </TouchableOpacity>
-      {isExpanded && (
-        <View style={styles.actionButtonContainer}>
-          <TouchableOpacity style={styles.reportButton}>
-            <Text style={styles.reportButtonText}>Make a VIS Report</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.confirmButton}>
-            <Text style={styles.confirmButtonText}>Confirm Visibility</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.flagButton}>
-            <Text style={styles.flagButtonText}>Wrong Visibility</Text>
-          </TouchableOpacity>
-        </View>
-      )}
     </View>
   );
 };
@@ -144,50 +126,5 @@ const stylesheet = createStyleSheet((theme) => ({
   favoriteIcon: {
     color: "gold",
     marginTop: 8,
-  },
-  actionButtonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: 10,
-  },
-  confirmButton: {
-    backgroundColor: theme.colors.primary,
-    borderRadius: 8,
-    flex: 1,
-    alignItems: "center",
-    paddingVertical: 10,
-    marginHorizontal: 4, // Added to ensure spacing between buttons
-  },
-  confirmButtonText: {
-    color: theme.colors.white,
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  flagButton: {
-    backgroundColor: theme.colors.error,
-    borderRadius: 8,
-    flex: 1,
-    alignItems: "center",
-    paddingVertical: 10,
-    marginHorizontal: 4, // Added to ensure spacing between buttons
-  },
-  flagButtonText: {
-    color: theme.colors.white,
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  reportButton: {
-    backgroundColor: "teal",
-    borderRadius: 8,
-    flex: 1,
-    alignItems: "center",
-    paddingVertical: 10,
-    marginHorizontal: 4, // Added to ensure spacing between buttons
-  },
-  reportButtonText: {
-    color: theme.colors.white,
-    fontSize: 16,
-    fontWeight: "bold",
   },
 }));

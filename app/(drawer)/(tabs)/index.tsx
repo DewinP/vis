@@ -1,61 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SpotItem from "@/components/SpotItem";
 import { ScrollView, View } from "react-native";
 import { createStyleSheet, useStyles } from "react-native-unistyles";
-
-const spotData = [
-  {
-    spotName: "Ti Point",
-    visibilityRange: "10-12m",
-    confirmations: 10,
-    timeAgo: "1 hour",
-    distance: 5,
-    isFavorite: false,
-  },
-  {
-    spotName: "Waba Daba",
-    visibilityRange: "2-4m",
-    confirmations: 10,
-    timeAgo: "1 hour",
-    distance: 5,
-    isFavorite: false,
-  },
-  {
-    spotName: "The ocean",
-    visibilityRange: "6-8m",
-    confirmations: 10,
-    timeAgo: "1 hour",
-    distance: 5,
-    isFavorite: false,
-  },
-];
+import { supabase } from "@/utils/supabase";
+import { Database } from "@/database.types";
+import { Spot } from "@/components/types";
 
 export default function HomeScreen() {
   const { styles } = useStyles(stylesheet);
-  const [expandedSpot, setExpandedSpot] = useState<string | null>(null);
+  const [spots, setSpots] = useState<Spot[]>([]);
 
-  const toggleExpand = (spotName: string) => {
-    setExpandedSpot(expandedSpot === spotName ? null : spotName);
-  };
+  useEffect(() => {
+    const fetchSpots = async () => {
+      const { data, error } = await supabase.from("spots").select("*");
+
+      if (error) {
+        console.error("Error fetching spots:", error);
+      } else {
+        setSpots(data as Spot[]);
+      }
+    };
+
+    fetchSpots();
+  }, []);
 
   return (
     <ScrollView style={styles.container}>
       <View>
-        {spotData.map((spot) => (
-          <SpotItem
-            key={spot.spotName}
-            spotName={spot.spotName}
-            visibilityRange={spot.visibilityRange}
-            confirmations={spot.confirmations}
-            timeAgo={spot.timeAgo}
-            distance={spot.distance}
-            isFavorite={spot.isFavorite}
-            onFavoriteToggle={() => {}}
-            isExpanded={expandedSpot === spot.spotName}
-            onExpandToggle={() => toggleExpand(spot.spotName)}
-            reportedBy="John Doe"
-            rank="Vis Master"
-          />
+        {spots.map((spot) => (
+          <SpotItem key={spot.id} spotInfo={spot} />
         ))}
       </View>
     </ScrollView>

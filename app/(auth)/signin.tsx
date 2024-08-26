@@ -99,7 +99,6 @@ export default function SignInScreen() {
             style={styles.input}
             placeholder="Password"
             placeholderTextColor={styles.placeholder.color}
-            secureTextEntry={!showPassword}
             value={password}
             onChangeText={setPassword}
             autoCapitalize="none"
